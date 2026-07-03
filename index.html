@@ -82,14 +82,6 @@
   }
   .truck-layer img{ width:100%; height:auto; display:block; }
 
-  .truck-front-layer{
-    transform: translate(-50%,0) scale(0.08);
-    opacity: 1; z-index: 3;
-    transition: transform 1.9s cubic-bezier(.16,.84,.28,1), opacity .7s ease .1s;
-  }
-  .truck-front-layer.arrived{ transform: translate(-50%,0) scale(1); }
-  .truck-front-layer.fade-out{ opacity: 0; }
-
   .truck-side-layer{
     transform: translate(-50%,0) scale(0.94);
     opacity: 0; z-index: 2;
@@ -97,61 +89,68 @@
   }
   .truck-side-layer.visible{ opacity: 1; }
 
-  /* ---------- INTRO (Ladebildschirm + Anfahrt) ---------- */
+  /* ---------- INTRO (Ladebildschirm + fahrender LKW) ---------- */
   #introOverlay{
     position: fixed; inset:0; z-index: 9999;
-    background: #000;
+    background: #000; overflow:hidden;
     display:flex; align-items:center; justify-content:center;
     transition: opacity .9s ease;
   }
   #introOverlay.hide{ opacity: 0; pointer-events:none; }
-  .intro-truck-stage{ position:relative; width:100%; height:100%; }
-  .intro-truck-layer{
-    position:absolute; left:50%; top:50%;
-    width: min(640px, 62vw);
-    transform-origin: 50% 50%;
-    border-radius: 14px; overflow:hidden;
-    box-shadow: 0 40px 90px rgba(0,0,0,0.7);
-  }
-  .intro-truck-layer img{ width:100%; height:auto; display:block; }
-  .intro-front{
-    transform: translate(-50%,-50%) scale(0.06);
-    opacity: 1; z-index: 3;
-    transition: transform 2.1s cubic-bezier(.16,.84,.28,1), opacity .6s ease .1s;
-  }
-  .intro-front.arrived{ transform: translate(-50%,-50%) scale(1); }
-  .intro-front.fade-out{ opacity: 0; }
-  .intro-side{
-    transform: translate(-50%,-50%) scale(0.94);
-    opacity: 0; z-index: 2;
-    transition: opacity 1s ease;
-  }
-  .intro-side.visible{ opacity: 1; }
 
-  /* Scheinwerfer-Glow: schaltet sich ein, sobald der LKW angekommen ist */
-  .headlight-glow{
-    position:absolute; width: 15%; height: 11%;
-    top: 76%; border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,247,220,0.95) 0%, rgba(255,205,110,0.55) 45%, rgba(255,180,60,0) 75%);
-    filter: blur(4px);
-    mix-blend-mode: screen;
+  .intro-road{
+    position:absolute; left:0; right:0; bottom: 24%; height:4px;
+    background-image: repeating-linear-gradient(to right, rgba(255,255,255,.55) 0 50px, transparent 50px 110px);
     opacity: 0;
-    transition: opacity .5s ease;
-    z-index: 4;
   }
-  .hl-left{ left: 20%; }
-  .hl-right{ left: 65%; }
-  .ground-glow{
-    position:absolute; left:50%; bottom: 6%; transform:translateX(-50%);
-    width: 70%; height: 16%;
-    background: radial-gradient(ellipse, rgba(255,210,120,0.35) 0%, rgba(255,180,60,0) 72%);
-    filter: blur(6px);
-    opacity: 0;
-    transition: opacity .6s ease;
-    z-index: 1;
+  .intro-road.driving{ animation: roadFly 2s cubic-bezier(.22,.7,.15,1) forwards; }
+  @keyframes roadFly{
+    0%   { opacity:1; background-position-x: 0; }
+    85%  { opacity:1; background-position-x: -2500px; }
+    100% { opacity:1; background-position-x: -2560px; }
   }
-  .intro-front.arrived .headlight-glow,
-  .intro-front.arrived .ground-glow{ opacity: 1; }
+
+  .speed-streak{
+    position:absolute; height:3px; border-radius:2px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,.85), transparent);
+    opacity:0; filter: blur(1px); right: 50%;
+  }
+  .speed-streak.s1{ width: 30%; top: 42%; }
+  .speed-streak.s2{ width: 22%; top: 56%; }
+  .speed-streak.s3{ width: 17%; top: 66%; }
+  .speed-streak.driving{ animation: streak 2s cubic-bezier(.22,.7,.15,1) forwards; }
+  @keyframes streak{
+    0%   { transform: translateX(160vw); opacity:0; }
+    14%  { opacity: .95; }
+    55%  { transform: translateX(14vw); opacity:.7; }
+    78%  { opacity:0; }
+    100% { transform: translateX(0); opacity:0; }
+  }
+
+  .intro-truck{
+    position:relative;
+    width: min(1000px, 88vw);
+    filter: blur(0px);
+  }
+  .intro-truck img{ width:100%; display:block; }
+  .intro-truck.driving{ animation: truckDrive 2s cubic-bezier(.22,.7,.15,1) forwards; }
+  @keyframes truckDrive{
+    0%   { transform: translateX(140vw) scale(1.04); filter: blur(0px); }
+    8%   { filter: blur(18px); }
+    50%  { transform: translateX(7vw) scale(1.01); filter: blur(10px); }
+    72%  { transform: translateX(-2.4vw) scale(1); filter: blur(2px); }
+    88%  { transform: translateX(0.8vw); filter: blur(0px); }
+    100% { transform: translateX(0); filter: blur(0px); }
+  }
+
+  .intro-headlight{
+    position:absolute; width: 5.5%; height: 6%;
+    left: 86%; top: 73%; border-radius:50%;
+    background: radial-gradient(circle, rgba(255,247,220,0.95) 0%, rgba(255,205,110,0.5) 45%, rgba(255,180,60,0) 75%);
+    filter: blur(3px); mix-blend-mode: screen;
+    opacity: 0; transition: opacity .5s ease;
+  }
+  .intro-headlight.lit{ opacity: 1; }
 
   .truck-badge{
     position:absolute; font-weight:800; letter-spacing:3px; text-transform:uppercase;
@@ -169,7 +168,7 @@
     position:absolute; top: 110px; left:50%; transform: translateX(-50%);
     z-index: 5; text-align:center; width: 100%; padding: 0 6%;
     opacity:0;
-    animation: fadeUp 1s ease 3.5s forwards;
+    animation: fadeUp 1s ease 2.9s forwards;
   }
   @keyframes fadeUp{ from{ opacity:0; transform: translateX(-50%) translateY(18px);} to{ opacity:1; transform: translateX(-50%) translateY(0);} }
   .hero-copy h1{
@@ -194,7 +193,7 @@
   .scroll-hint{
     position:absolute; bottom: 5%; left:50%; transform: translateX(-50%);
     color: var(--text-dim); font-size:12px; letter-spacing:2px; text-transform:uppercase;
-    opacity:0; animation: fadeUp 1s ease 4.2s forwards;
+    opacity:0; animation: fadeUp 1s ease 3.6s forwards;
   }
 
   /* ---------- SECTIONS ---------- */
@@ -266,7 +265,7 @@
     .btn-primary, .btn-ghost{ width: 100%; max-width: 260px; text-align:center; padding: 13px 20px; }
 
     .truck-layer{ width: min(94vw, 480px); bottom: 0; }
-    .intro-truck-layer{ width: min(340px, 82vw); }
+    .intro-truck{ width: min(94vw, 480px); }
     .front-badge{ font-size: 9px; letter-spacing:2px; }
     .cab-badge{ font-size: 6px; letter-spacing:1px; }
     .trailer-slogan .line1, .trailer-slogan .line2{ font-size: clamp(9px,3.6vw,13px); }
@@ -287,16 +286,13 @@
 <body>
 
 <div id="introOverlay">
-  <div class="intro-truck-stage">
-    <div class="intro-truck-layer intro-front" id="introFront">
-      <img src="truck-front-v3.jpg" alt="MIRZO LKW Frontansicht">
-      <div class="headlight-glow hl-left"></div>
-      <div class="headlight-glow hl-right"></div>
-      <div class="ground-glow"></div>
-    </div>
-    <div class="intro-truck-layer intro-side" id="introSide">
-      <img src="truck-side-v3.jpg" alt="MIRZO LKW Seitenansicht">
-    </div>
+  <div class="speed-streak s1" id="streak1"></div>
+  <div class="speed-streak s2" id="streak2"></div>
+  <div class="speed-streak s3" id="streak3"></div>
+  <div class="intro-road" id="introRoad"></div>
+  <div class="intro-truck" id="introTruck">
+    <img src="truck-side-v3.jpg" alt="MIRZO LKW fährt ein">
+    <div class="intro-headlight" id="introHeadlight"></div>
   </div>
 </div>
 
@@ -416,20 +412,25 @@
     nav.classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // Intro: schwarzer Ladebildschirm -> LKW faehrt frontal an -> parkt seitlich -> Overlay blendet aus
+  // Intro: schwarzer Ladebildschirm -> LKW faehrt mit Motion-Blur rein und bremst ab -> Overlay blendet aus
   document.body.style.overflow = 'hidden';
   window.addEventListener('load', () => {
     const overlay = document.getElementById('introOverlay');
-    const iFront = document.getElementById('introFront');
-    const iSide = document.getElementById('introSide');
+    const truck = document.getElementById('introTruck');
+    const road = document.getElementById('introRoad');
+    const headlight = document.getElementById('introHeadlight');
+    const streaks = [document.getElementById('streak1'), document.getElementById('streak2'), document.getElementById('streak3')];
 
-    setTimeout(() => iFront.classList.add('arrived'), 300);                          // LKW faehrt gross heran
-    setTimeout(() => { iSide.classList.add('visible'); iFront.classList.add('fade-out'); }, 2500); // parkt seitlich
-    setTimeout(() => {                                                               // Overlay verschwindet, Seite wird sichtbar
+    truck.classList.add('driving');
+    road.classList.add('driving');
+    streaks.forEach(s => s.classList.add('driving'));
+
+    setTimeout(() => headlight.classList.add('lit'), 1950);   // Licht geht an, sobald geparkt
+    setTimeout(() => {                                        // Overlay verschwindet, Seite wird sichtbar
       overlay.classList.add('hide');
       document.body.style.overflow = '';
-    }, 3500);
-    setTimeout(() => overlay.remove(), 4500);
+    }, 2900);
+    setTimeout(() => overlay.remove(), 3900);
   });
 
   // Scroll-linked shrink/parallax of hero visual
