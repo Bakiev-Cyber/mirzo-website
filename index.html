@@ -205,19 +205,74 @@
   .section-title{ font-size: clamp(28px,4vw,42px); font-weight:800; margin-top:10px; margin-bottom:18px; }
   .section-lead{ color: var(--text-dim); max-width:640px; font-size:16px; line-height:1.7; }
 
+  /* ---------- WIR SIND (big statement section) ---------- */
+  .we-are{
+    position:relative; background:#050507; padding: 130px 6%;
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    overflow:hidden;
+  }
+  .we-are-inner{
+    max-width:1200px; margin:0 auto; display:grid;
+    grid-template-columns: 1.1fr 1fr; gap:60px; align-items:center;
+  }
+  .we-are-huge{
+    font-size: clamp(46px,8vw,108px); font-weight:900; letter-spacing:1px;
+    line-height:0.92; color: var(--accent);
+  }
+  .we-are-rotator{ margin-top:6px; min-height: 1.3em; overflow:hidden; }
+  .we-are-rotator span{
+    display:block; font-size: clamp(24px,3.6vw,42px); font-weight:800; color: var(--text);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .we-are-rotator span.swap{ opacity:0; transform: translateY(14px); }
+  .we-are-right .section-title{ margin-top:22px; }
+  .we-are-right .section-lead{ margin-bottom: 8px; }
+  .btn-block{
+    margin-top:28px; display:inline-flex; align-items:center; gap:12px;
+    background: var(--accent); color:#12100a; font-weight:800; letter-spacing:.4px;
+    padding:16px 28px; text-decoration:none; border-radius:8px; font-size:14px;
+    transition: gap .2s ease;
+  }
+  .btn-block:hover{ gap:18px; }
+  .spin-badge-wrap{ position:relative; width:118px; height:118px; margin-bottom:6px; }
+  .spin-badge-wrap svg{ width:100%; height:100%; animation: spinBadge 18s linear infinite; }
+  @keyframes spinBadge{ to{ transform: rotate(360deg); } }
+  .spin-badge-center{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-weight:900; color: var(--text); font-size:12px; letter-spacing:1px; text-align:center;
+  }
+  .spin-badge-center span{ color:var(--accent); }
+
+  @media (max-width: 820px){
+    .we-are-inner{ grid-template-columns: 1fr; gap:34px; }
+  }
+
   /* Services */
   .services-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:24px; margin-top: 50px; }
   .service-card{
+    position:relative; overflow:hidden;
     background: var(--panel); border:1px solid var(--border); border-radius:18px; padding: 32px 26px;
     transition: transform .25s ease, border-color .25s ease;
   }
   .service-card:hover{ transform: translateY(-6px); border-color: var(--accent); }
+  .service-card .bg-word{
+    position:absolute; right:-6px; bottom:-20px; z-index:0; pointer-events:none;
+    font-size:64px; font-weight:900; letter-spacing:1px; line-height:1; white-space:nowrap;
+    color:transparent; -webkit-text-stroke:1px rgba(255,176,32,0.16);
+  }
+  .service-card > *:not(.bg-word){ position:relative; z-index:1; }
   .service-icon{
     width:52px; height:52px; border-radius:14px; background: var(--accent-soft);
     display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:22px;
   }
   .service-card h3{ font-size:19px; margin-bottom:10px; }
   .service-card p{ color: var(--text-dim); font-size:14px; line-height:1.6; }
+  .card-link{
+    display:inline-flex; align-items:center; gap:8px; margin-top:16px;
+    color: var(--accent); font-weight:700; font-size:13px; text-decoration:none;
+    letter-spacing:.4px; transition: gap .2s ease;
+  }
+  .card-link:hover{ gap:12px; }
 
   /* About */
   .about-wrap{ display:grid; grid-template-columns: 1fr 1fr; gap:60px; align-items:center; }
@@ -270,6 +325,12 @@
     .cab-badge{ font-size: 6px; letter-spacing:1px; }
     .trailer-slogan .line1, .trailer-slogan .line2{ font-size: clamp(9px,3.6vw,13px); }
     .scroll-hint{ bottom: 3%; font-size: 10px; }
+
+    .we-are{ padding: 80px 6%; }
+    .we-are-huge{ font-size: clamp(38px,13vw,60px); }
+    .we-are-rotator span{ font-size: clamp(20px,6vw,28px); }
+    .spin-badge-wrap{ width:92px; height:92px; }
+    .service-card .bg-word{ font-size: 46px; }
 
     section.content{ padding: 70px 6%; }
     .section-title{ font-size: clamp(24px,7vw,32px); }
@@ -330,6 +391,32 @@
   <div class="scroll-hint">▾ Scrollen</div>
 </section>
 
+<section class="we-are">
+  <div class="we-are-inner">
+    <div class="reveal">
+      <div class="we-are-huge">WIR SIND</div>
+      <div class="we-are-rotator"><span id="rotatorText">ZUVERLÄSSIG.</span></div>
+    </div>
+    <div class="we-are-right reveal">
+      <div class="spin-badge-wrap">
+        <svg viewBox="0 0 200 200">
+          <defs>
+            <path id="badgeCircle" d="M 100,100 m -82,0 a 82,82 0 1,1 164,0 a 82,82 0 1,1 -164,0" />
+          </defs>
+          <text font-size="11.5" font-weight="700" letter-spacing="2" fill="#ffb020">
+            <textPath href="#badgeCircle" startOffset="0%">ZUVERLÄSSIG • PÜNKTLICH • SICHER • MODERN • </textPath>
+          </text>
+        </svg>
+        <div class="spin-badge-center">MIRZO<br><span>seit heute</span></div>
+      </div>
+      <span class="section-tag">Über MIRZO</span>
+      <h2 class="section-title">Ihre Referenz für Transport &amp; Logistik</h2>
+      <p class="section-lead">MIRZO Spedition steht für zuverlässigen, pünktlichen und sicheren Gütertransport – mit modernem Fuhrpark und persönlichem Service, national wie international.</p>
+      <a href="#leistungen" class="btn-block">Leistungen entdecken <span>→</span></a>
+    </div>
+  </div>
+</section>
+
 <section class="content" id="leistungen">
   <div class="reveal">
     <span class="section-tag">Leistungen</span>
@@ -338,24 +425,32 @@
   </div>
   <div class="services-grid reveal">
     <div class="service-card">
+      <div class="bg-word">TRANSPORT</div>
       <div class="service-icon">🚛</div>
       <h3>Nationaler Transport</h3>
       <p>Zuverlässige Komplett- und Teilladungen innerhalb Deutschlands mit fester Zeitplanung.</p>
+      <a href="#kontakt" class="card-link">Mehr erfahren <span>→</span></a>
     </div>
     <div class="service-card">
+      <div class="bg-word">EUROPA</div>
       <div class="service-icon">🌍</div>
       <h3>Internationale Spedition</h3>
       <p>Grenzüberschreitende Transporte europaweit, inklusive Zollabwicklung und Dokumentation.</p>
+      <a href="#kontakt" class="card-link">Mehr erfahren <span>→</span></a>
     </div>
     <div class="service-card">
+      <div class="bg-word">LAGER</div>
       <div class="service-icon">📦</div>
       <h3>Lagerlogistik</h3>
       <p>Kurzfristige und langfristige Lagerung mit flexiblem Ein- und Auslagerungsprozess.</p>
+      <a href="#kontakt" class="card-link">Mehr erfahren <span>→</span></a>
     </div>
     <div class="service-card">
+      <div class="bg-word">EXPRESS</div>
       <div class="service-icon">⚡</div>
       <h3>Express-Lieferung</h3>
       <p>Zeitkritische Sendungen mit Priorität – schnell, verfolgbar und sicher am Ziel.</p>
+      <a href="#kontakt" class="card-link">Mehr erfahren <span>→</span></a>
     </div>
   </div>
 </section>
@@ -452,6 +547,21 @@
     entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
+
+  // "Wir sind ..." rotierender Slogan
+  const rotatorPhrases = ['ZUVERLÄSSIG.', 'PÜNKTLICH.', 'IHR PARTNER.', 'MODERN.'];
+  const rotatorEl = document.getElementById('rotatorText');
+  if (rotatorEl){
+    let rIndex = 0;
+    setInterval(() => {
+      rotatorEl.classList.add('swap');
+      setTimeout(() => {
+        rIndex = (rIndex + 1) % rotatorPhrases.length;
+        rotatorEl.textContent = rotatorPhrases[rIndex];
+        rotatorEl.classList.remove('swap');
+      }, 450);
+    }, 2600);
+  }
 </script>
 
 </body>
